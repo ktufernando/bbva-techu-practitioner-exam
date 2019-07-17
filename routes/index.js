@@ -1,9 +1,5 @@
-const express = require('express');
+var router = require('express').Router();
 
-const app = express();
+router.use('/api', require('./api'));
 
-app.use(require('./usuario'));
-app.use(require('./cuenta'));
-app.use(require('./movimiento'));
-
-module.exports = app;
+module.exports = router;
