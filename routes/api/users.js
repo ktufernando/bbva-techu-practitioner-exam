@@ -33,11 +33,11 @@ router.put('/', auth.required, (req, res, next) => {
 });
 router.post('/login', (req, res, next) => {
     if(!req.body.user.email){
-      return res.status(422).json({errors: {email: "no puede estar en blanco"}});
+      return res.status(422).json({errors: {message: "El mail no puede estar en blanco"}});
     }
   
     if(!req.body.user.password){
-      return res.status(422).json({errors: {password: "no puede estar en blanco"}});
+      return res.status(422).json({errors: {message: "El password no puede estar en blanco"}});
     }
   
     passport.authenticate('local', {session: false}, (err, user, info) => {
