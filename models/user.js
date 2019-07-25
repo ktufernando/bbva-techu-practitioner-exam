@@ -19,7 +19,7 @@ let UserSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
-UserSchema.plugin(uniqueValidator, { message: '{PATH} ya esta tomado' });
+UserSchema.plugin(uniqueValidator, { email: 'El {PATH} ya esta tomado.' });
 
 UserSchema.methods.validPassword = function(password) {
     var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
