@@ -6,7 +6,7 @@ const path = require('path');
 const cors = require('cors');
 const errorhandler = require('errorhandler');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction =true;
 
 // Create global app object
 const app = express();
