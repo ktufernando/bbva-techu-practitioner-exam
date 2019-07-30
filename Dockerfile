@@ -11,7 +11,7 @@ ADD . /app
 RUN npm install
 
 # Puerto que expongo
-EXPOSE 3000
+EXPOSE 5000
 
 # Comandos
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
