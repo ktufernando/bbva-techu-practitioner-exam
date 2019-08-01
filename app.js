@@ -30,6 +30,8 @@ mongoose.connect(process.env.URLDB, (err, res) => {
 });
 
 require('./models/user');
+require('./models/movement');
+require('./models/account');
 require('./config/passport');
 
 // Configuración global de rutas
