@@ -1,23 +1,53 @@
 const mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 
 let AccountSchema = new mongoose.Schema({
-    account: {
+    number: {
         type: String,
-        required: [true, 'La cuenta es necesaria']
+        unique: true
     },
-    name: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'El usuario es necesario']
       },
     amount: {
         type: Number,
-        required: [true, 'El importe es necesario']
+        default: 0
     },
     type: {
         type: String,
-        required: [true, 'Tipo de cuenta necesario']
+        enum : ['CA','CC'],
+        default: 'CA'
+    },
+    currency: {
+        type: String,
+        enum : ['AR$','US$', '€'],
+        default: 'AR$'
     },
 }, {timestamps: true});
+
+AccountSchema.plugin(uniqueValidator, {message: 'ya existe'});
+
+AccountSchema.pre('validate', function (next) {
+    if(!this.number)  {
+        this.uniqueNumber();
+    }
+    next();
+});
+
+AccountSchema.methods.uniqueNumber = function() {
+    this.number =  new Date().getTime();
+};
+
+AccountSchema.methods.toJSON = function() {
+    return {
+      id: this._id,
+      number: this.number,
+      amount: this.amount,
+      type: this.type,
+      currency: this.currency
+    }
+};
 
 module.exports = mongoose.model('Account', AccountSchema);

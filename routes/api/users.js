@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const passport = require('passport');
 const User = mongoose.model('User');
+const Account = mongoose.model('Account');
 const auth = require('../auth');
 
 router.get('/', auth.required, (req, res, next) => {
-    User.findById(req.payload.id).then(function(user){
+    User.findById(req.payload.id).then((user) => {
       if(!user){ return res.sendStatus(401); }
   
       return res.json({user: user.toAuthJSON()});
@@ -51,7 +52,7 @@ router.post('/login', (req, res, next) => {
       }
     })(req, res, next);
 });
-router.post('/', function(req, res, next){
+router.post('/', (req, res, next) => {
     var user = new User();
     if(!req.body.user.name){
       return res.status(422).json({errors: {name: "El nombre no puede estar en blanco"}});
@@ -66,9 +67,16 @@ router.post('/', function(req, res, next){
     user.email = req.body.user.email;
     user.setPassword(req.body.user.password);
   
-    user.save().then(function(){
+    user.save().then(() => {
+      createAccount(user);
       return res.json({user: user.toAuthJSON()});
+
     }).catch(next);
 });
+
+let createAccount = async (user) => {
+  var account = new Account({user});
+  account.save().catch( (err) => console.log(err));
+};
 
 module.exports = router;
